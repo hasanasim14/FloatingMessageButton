@@ -21,6 +21,9 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import Image from "next/image";
+import Message from "@/components/homepage/Message";
+import Help from "@/components/homepage/Help";
 
 type PopoverPage = "home" | "message" | "search" | "medusa" | "help";
 
@@ -38,35 +41,36 @@ export default function ChatButton() {
     switch (currentPage) {
       case "message":
         return (
-          <div className="flex flex-col h-full">
-            <div className="bg-blue-500 text-white p-4 flex items-center">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="text-white mr-2 hover:bg-blue-600"
-                onClick={() => navigateTo("home")}
-              >
-                <ArrowLeft className="h-5 w-5" />
-              </Button>
-              <h2 className="text-xl font-bold">Send a message</h2>
-            </div>
+          // <div className="flex flex-col h-full">
+          //   <div className="bg-blue-500 text-white p-4 flex items-center">
+          //     <Button
+          //       variant="ghost"
+          //       size="icon"
+          //       className="text-white mr-2 hover:bg-blue-600"
+          //       onClick={() => navigateTo("home")}
+          //     >
+          //       <ArrowLeft className="h-5 w-5" />
+          //     </Button>
+          //     <h2 className="text-xl font-bold">Send a message</h2>
+          //   </div>
 
-            <div className="flex-1 p-4 overflow-y-auto">
-              <p className="text-gray-500 mb-4">
-                Our team will get back to you as soon as possible.
-              </p>
-              <Textarea
-                placeholder="Type your message here..."
-                className="min-h-[150px] mb-4"
-                value={messageText}
-                onChange={(e) => setMessageText(e.target.value)}
-              />
-              <Button className="w-full">
-                <Send className="h-4 w-4 mr-2" />
-                Send Message
-              </Button>
-            </div>
-          </div>
+          //   <div className="flex-1 p-4 overflow-y-auto">
+          //     <p className="text-gray-500 mb-4">
+          //       Our team will get back to you as soon as possible.
+          //     </p>
+          //     <Textarea
+          //       placeholder="Type your message here..."
+          //       className="min-h-[150px] mb-4"
+          //       value={messageText}
+          //       onChange={(e) => setMessageText(e.target.value)}
+          //     />
+          //     <Button className="w-full">
+          //       <Send className="h-4 w-4 mr-2" />
+          //       Send Message
+          //     </Button>
+          //   </div>
+          // </div>
+          <Message />
         );
 
       case "search":
@@ -186,55 +190,56 @@ export default function ChatButton() {
 
       case "help":
         return (
-          <div className="flex flex-col h-full">
-            <div className="bg-blue-500 text-white p-4 flex items-center">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="text-white mr-2 hover:bg-blue-600"
-                onClick={() => navigateTo("home")}
-              >
-                <ArrowLeft className="h-5 w-5" />
-              </Button>
-              <h2 className="text-xl font-bold">Help Center</h2>
-            </div>
+          // <div className="flex flex-col h-full">
+          //   <div className="bg-blue-500 text-white p-4 flex items-center">
+          //     <Button
+          //       variant="ghost"
+          //       size="icon"
+          //       className="text-white mr-2 hover:bg-blue-600"
+          //       onClick={() => navigateTo("home")}
+          //     >
+          //       <ArrowLeft className="h-5 w-5" />
+          //     </Button>
+          //     <h2 className="text-xl font-bold">Help Center</h2>
+          //   </div>
 
-            <div className="flex-1 p-4 overflow-y-auto">
-              <h3 className="font-bold text-lg mb-3">Popular Topics</h3>
-              <div className="space-y-2">
-                <div className="bg-white rounded-lg p-4 border">
-                  <div className="flex justify-between items-center">
-                    <h4 className="font-medium">Orders & Shipping</h4>
-                    <ChevronRight className="h-5 w-5 text-gray-400" />
-                  </div>
-                </div>
-                <div className="bg-white rounded-lg p-4 border">
-                  <div className="flex justify-between items-center">
-                    <h4 className="font-medium">Returns & Refunds</h4>
-                    <ChevronRight className="h-5 w-5 text-gray-400" />
-                  </div>
-                </div>
-                <div className="bg-white rounded-lg p-4 border">
-                  <div className="flex justify-between items-center">
-                    <h4 className="font-medium">Account & Security</h4>
-                    <ChevronRight className="h-5 w-5 text-gray-400" />
-                  </div>
-                </div>
-                <div className="bg-white rounded-lg p-4 border">
-                  <div className="flex justify-between items-center">
-                    <h4 className="font-medium">Payment Methods</h4>
-                    <ChevronRight className="h-5 w-5 text-gray-400" />
-                  </div>
-                </div>
-                <div className="bg-white rounded-lg p-4 border">
-                  <div className="flex justify-between items-center">
-                    <h4 className="font-medium">Technical Support</h4>
-                    <ChevronRight className="h-5 w-5 text-gray-400" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          //   <div className="flex-1 p-4 overflow-y-auto">
+          //     <h3 className="font-bold text-lg mb-3">Popular Topics</h3>
+          //     <div className="space-y-2">
+          //       <div className="bg-white rounded-lg p-4 border">
+          //         <div className="flex justify-between items-center">
+          //           <h4 className="font-medium">Orders & Shipping</h4>
+          //           <ChevronRight className="h-5 w-5 text-gray-400" />
+          //         </div>
+          //       </div>
+          //       <div className="bg-white rounded-lg p-4 border">
+          //         <div className="flex justify-between items-center">
+          //           <h4 className="font-medium">Returns & Refunds</h4>
+          //           <ChevronRight className="h-5 w-5 text-gray-400" />
+          //         </div>
+          //       </div>
+          //       <div className="bg-white rounded-lg p-4 border">
+          //         <div className="flex justify-between items-center">
+          //           <h4 className="font-medium">Account & Security</h4>
+          //           <ChevronRight className="h-5 w-5 text-gray-400" />
+          //         </div>
+          //       </div>
+          //       <div className="bg-white rounded-lg p-4 border">
+          //         <div className="flex justify-between items-center">
+          //           <h4 className="font-medium">Payment Methods</h4>
+          //           <ChevronRight className="h-5 w-5 text-gray-400" />
+          //         </div>
+          //       </div>
+          //       <div className="bg-white rounded-lg p-4 border">
+          //         <div className="flex justify-between items-center">
+          //           <h4 className="font-medium">Technical Support</h4>
+          //           <ChevronRight className="h-5 w-5 text-gray-400" />
+          //         </div>
+          //       </div>
+          //     </div>
+          //   </div>
+          // </div>
+          <Help />
         );
 
       default: // 'home'
@@ -331,7 +336,7 @@ export default function ChatButton() {
             <div className="flex justify-around p-4 bg-white rounded-b-2xl">
               <Button
                 variant="ghost"
-                className="flex flex-col items-center gap-1 h-auto text-blue-500"
+                className="flex flex-col items-center gap-1 h-auto text-blue-500 cursor-pointer"
                 onClick={() => navigateTo("home")}
               >
                 <Home className="h-6 w-6" />
@@ -339,7 +344,7 @@ export default function ChatButton() {
               </Button>
               <Button
                 variant="ghost"
-                className="flex flex-col items-center gap-1 h-auto text-gray-500 hover:text-blue-500"
+                className="flex flex-col items-center gap-1 h-auto text-gray-500 hover:text-blue-500 cursor-pointer"
                 onClick={() => navigateTo("message")}
               >
                 <MessageCircle className="h-6 w-6" />
@@ -347,10 +352,10 @@ export default function ChatButton() {
               </Button>
               <Button
                 variant="ghost"
-                className="flex flex-col items-center gap-1 h-auto text-gray-500 hover:text-blue-500"
+                className="flex flex-col items-center gap-1 h-auto text-gray-500 hover:text-blue-500 cursor-pointer"
                 onClick={() => navigateTo("help")}
               >
-                <HelpCircle className="h-6 w-6" />
+                <HelpCircle className="h-8 w-8" />
                 <span className="font-medium">Help</span>
               </Button>
             </div>
@@ -361,10 +366,18 @@ export default function ChatButton() {
 
   return (
     <>
+      <Image
+        src="/hero.png"
+        alt="hero-image"
+        // width={120}
+        // height={120}
+        fill
+      />
+
       <div className="fixed bottom-8 right-8 z-40">
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
-            <Button className="h-16 w-16 rounded-full shadow-lg cursor-pointer transition-transform duration-200 hover:scale-110 p-0 flex items-center justify-center">
+            <Button className="h-12 w-12 rounded-full shadow-lg cursor-pointer transition-transform duration-200 hover:scale-110 p-0 flex items-center justify-center">
               <MessageSquare className="h-10 w-10" />
             </Button>
           </PopoverTrigger>
