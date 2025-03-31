@@ -1,52 +1,135 @@
-import {
-  //  ArrowLeft, ChevronRight,
-  Search,
-} from "lucide-react";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
+"use client";
 
-export default function Help() {
+import { ChevronRight, Search } from "lucide-react";
+import { useEffect, useRef } from "react";
+
+export default function HelpCenterPage() {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  // Sample data with more collections to demonstrate scrolling
+  const collections = [
+    {
+      title: "Getting Started with M&P",
+      description: "Yay! We're excited to get you on board.",
+      articles: 2,
+      highlighted: false,
+    },
+    {
+      title: "Customer Support",
+      description: "Hey there question. Can I interest you in some answers?",
+      articles: 58,
+      highlighted: true,
+    },
+    {
+      title: "Shipping",
+      description: "We love packing boxes. This is how we send them to you.",
+      articles: 2,
+      highlighted: false,
+    },
+    {
+      title: "Frequently Asked Questions (FAQ)",
+      description: "Answers to Common Questions",
+      articles: 6,
+      highlighted: false,
+    },
+    {
+      title: "Returns & Refunds",
+      description: "How to return items and get your money back.",
+      articles: 4,
+      highlighted: false,
+    },
+    {
+      title: "Account Management",
+      description: "Managing your Medusa account settings and preferences.",
+      articles: 7,
+      highlighted: false,
+    },
+    {
+      title: "Product Information",
+      description: "Details about our products and how to use them.",
+      articles: 12,
+      highlighted: false,
+    },
+    {
+      title: "Payment Methods",
+      description: "Information about accepted payment methods and billing.",
+      articles: 5,
+      highlighted: false,
+    },
+  ];
+
+  // Simulate scrolling to show the scrollbar
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (scrollContainerRef.current) {
+        scrollContainerRef.current.scrollTop = 1;
+        setTimeout(() => {
+          if (scrollContainerRef.current) {
+            scrollContainerRef.current.scrollTop = 0;
+          }
+        }, 100);
+      }
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
-    <>
-      <div className="w-full max-w-md mx-auto bg-white rounded-3xl overflow-hidden shadow-sm">
-        <div className="text-center p-6 border-b">
-          <h2 className="text-xl font-semibold">Help</h2>
+    <div className="max-w-md mx-auto h-screen flex flex-col bg-white rounded-xl shadow-sm overflow-hidden">
+      {/* Fixed header */}
+      <div className="p-4 border-b bg-white sticky top-0 z-10">
+        <h1 className="text-xl font-semibold text-center mb-4">Help</h1>
 
-          <div className="relative mt-4">
-            <Input className="pr-10" placeholder="Search for help" />
-            <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 cursor-pointer" />
+        {/* Search Bar */}
+        <div className="relative mb-1">
+          <input
+            type="text"
+            placeholder="Search for help"
+            className="w-full py-2 px-4 bg-gray-100 rounded-md pr-10 focus:outline-none border border-gray-300"
+          />
+          <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-500">
+            <Search className="h-4 w-4 stroke-[3] text-[#f46117]" />
           </div>
-        </div>
-
-        <div className="flex flex-col items-center justify-center space-y-4 p-8">
-          <div className="w-12 h-12 rounded-full border-2 border-gray-200 flex items-center justify-center">
-            {/* <MessageCircle className="h-6 w-6 text-gray-500" /> */}
-          </div>
-          <span className="text-xl font-medium">No messages</span>
-          <p className="text-gray-500 text-center">
-            Messages from the team will be shown here
-          </p>
-          <Button className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-full flex items-center space-x-2 mt-2 cursor-pointer">
-            <span>Send us a Message</span>
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="rotate-45"
-            >
-              <path
-                d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </Button>
         </div>
       </div>
-    </>
+
+      {/* Scrollable content */}
+      <div
+        ref={scrollContainerRef}
+        className="flex-1 overflow-y-auto p-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent"
+      >
+        <div className="mb-4">
+          <p className="text-gray-700 font-medium">
+            {collections.length} collections
+          </p>
+        </div>
+
+        <div className="space-y-4">
+          {collections.map((collection, index) => (
+            <div
+              key={index}
+              className="p-4 rounded-md cursor-pointer bg-white border border-gray-100 hover:bg-[#f46117]/20 transition-colors duration-300 group"
+            >
+              <div className="flex justify-between items-start">
+                <div>
+                  <h3 className="font-medium text-gray-900 transition-colors duration-200 group-hover:text-[#f46117]">
+                    {collection.title}
+                  </h3>
+                  <p className="text-gray-600 text-sm mt-1">
+                    {collection.description}
+                  </p>
+                  <p className="text-gray-500 text-sm mt-2">
+                    {collection.articles} articles
+                  </p>
+                </div>
+                <ChevronRight className="h-5 w-5 text-[#f46117] stroke-[2] mt-1 flex-shrink-0" />
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="h-4"></div>
+      </div>
+    </div>
   );
 }

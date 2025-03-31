@@ -1,77 +1,73 @@
-import {
-  //  ArrowLeft, ChevronRight,
-  MessageCircle,
-  // , Send
-} from "lucide-react";
-import { Button } from "../ui/button";
-// import { Textarea } from "../ui/textarea";
+"use client";
 
-export default function Message() {
+import { ArrowLeft, ArrowUp, Clock } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { useState } from "react";
+
+export default function ChatPage() {
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+
   return (
-    <>
-      {/* <div className="flex flex-col h-full">
-        <div className="bg-blue-500 text-white p-4 flex items-center">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-white mr-2 hover:bg-blue-600"
-            // onClick={() => navigateTo("home")}
-          >
-            <ArrowLeft className="h-5 w-5" />
-          </Button>
-          <h2 className="text-xl font-bold">Send a message</h2>
-        </div>
+    <div className="flex flex-col h-screen bg-white">
+      {/* Header */}
+      <div className="flex items-center p-4 border-b">
+        <button className="p-3 cursor-pointer hover:bg-gray-100 rounded-2xl">
+          <ArrowLeft className="h-6 w-6 text-gray-700" />
+        </button>
 
-        <div className="flex-1 p-4 overflow-y-auto">
-          <p className="text-gray-500 mb-4">
-            Our team will get back to you as soon as possible.
-          </p>
-          <Textarea
-            placeholder="Type your message here..."
-            className="min-h-[150px] mb-4"
-            // value={messageText}
-            // onChange={(e) => setMessageText(e.target.value)}
-          />
-          <Button className="w-full">
-            <Send className="h-4 w-4 mr-2" />
-            Send Message
-          </Button>
-        </div>
-      </div> */}
-      <div className="w-full max-w-md mx-auto bg-white rounded-3xl overflow-hidden shadow-sm">
-        <div className="text-center p-6 border-b">
-          <h2 className="text-2xl font-bold">Messages</h2>
-        </div>
-
-        <div className="flex flex-col items-center justify-center space-y-4 p-8">
-          <div className="w-12 h-12 rounded-full border-2 border-gray-200 flex items-center justify-center">
-            <MessageCircle className="h-6 w-6 text-gray-500" />
+        <div className="flex items-center ml-2">
+          <div className="ml-8">
+            <h2 className="font-bold text-xl">M&P</h2>
+            <div className="flex items-center text-gray-500 text-sm">
+              <Clock className="h-4 w-4 mr-1" />
+              <span>Back in 3 hours</span>
+            </div>
           </div>
-          <span className="text-xl font-medium">No messages</span>
-          <p className="text-gray-500 text-center">
-            Messages from the team will be shown here
-          </p>
-          <Button className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-full flex items-center space-x-2 mt-2 cursor-pointer">
-            <span>Send us a Message</span>
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="rotate-45"
-            >
-              <path
-                d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </Button>
         </div>
       </div>
-    </>
+
+      {/* Chat area */}
+      <div className="flex-1 p-4 overflow-y-auto">
+        <div className="text-center text-gray-600 my-8">
+          <p className="text-s">Ask us anything. We&apos;re here to help :)</p>
+        </div>
+
+        {/* This area would contain chat messages */}
+        <div className="flex-1"></div>
+      </div>
+
+      {/* Message input */}
+      <div className="p-4">
+        <div className="bg-gray-100 rounded-3xl p-4">
+          <Input
+            type="email"
+            placeholder="email@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="border-none bg-transparent mb-2 px-0 focus-visible:ring-0"
+          />
+
+          <div className="h-px bg-gray-300 my-2"></div>
+
+          <div className="flex items-end">
+            <Textarea
+              placeholder="Message..."
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              className="border-none bg-transparent resize-none px-0 focus-visible:ring-0 flex-1"
+              rows={1}
+            />
+
+            <div className="flex items-center">
+              <button className="ml-2 bg-gray-200 rounded-full p-3 hover:bg-gray-300 cursor-pointer">
+                <ArrowUp className="h-5 w-5 text-gray-500" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
