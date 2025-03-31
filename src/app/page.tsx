@@ -9,21 +9,22 @@ import {
 } from "@/components/ui/popover";
 import {
   MessageSquare,
-  Home,
-  MessageCircle,
-  HelpCircle,
+  // Home,
+  // MessageCircle,
+  // HelpCircle,
   Search,
-  ChevronRight,
-  ArrowRight,
+  // ChevronRight,
+  // ArrowRight,
   ArrowLeft,
-  Send,
+  // Send,
 } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+// import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+// import { Textarea } from "@/components/ui/textarea";
 import Image from "next/image";
 import Message from "@/components/homepage/Message";
 import Help from "@/components/homepage/Help";
+import HomePage from "@/components/homepage/Home";
 
 type PopoverPage = "home" | "message" | "search" | "medusa" | "help";
 
@@ -31,7 +32,7 @@ export default function ChatButton() {
   const [open, setOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState<PopoverPage>("home");
   const [searchQuery, setSearchQuery] = useState("");
-  const [messageText, setMessageText] = useState("");
+  // const [messageText, setMessageText] = useState("");
 
   const navigateTo = (page: PopoverPage) => {
     setCurrentPage(page);
@@ -76,11 +77,11 @@ export default function ChatButton() {
       case "search":
         return (
           <div className="flex flex-col h-full">
-            <div className="bg-blue-500 text-white p-4 flex items-center">
+            <div className="bg-[#f46117] text-white p-4 flex items-center">
               <Button
                 variant="ghost"
                 size="icon"
-                className="text-white mr-2 hover:bg-blue-600"
+                className="text-white mr-2"
                 onClick={() => navigateTo("home")}
               >
                 <ArrowLeft className="h-5 w-5" />
@@ -103,7 +104,7 @@ export default function ChatButton() {
             <div className="flex-1 px-4 pb-4 overflow-y-auto">
               {searchQuery ? (
                 <div className="space-y-2">
-                  <p className="text-gray-500">Results for "{searchQuery}"</p>
+                  {/* <p className="text-gray-500">Results for "{searchQuery}"</p> */}
                   <div className="bg-white rounded-lg p-4 border">
                     <h3 className="font-medium">How to use Medusa Coins</h3>
                     <p className="text-sm text-gray-500">
@@ -130,11 +131,11 @@ export default function ChatButton() {
       case "medusa":
         return (
           <div className="flex flex-col h-full">
-            <div className="bg-blue-500 text-white p-4 flex items-center">
+            <div className=" text-white p-4 flex items-center">
               <Button
                 variant="ghost"
                 size="icon"
-                className="text-white mr-2 hover:bg-blue-600"
+                className="text-white mr-2"
                 onClick={() => navigateTo("home")}
               >
                 <ArrowLeft className="h-5 w-5" />
@@ -143,10 +144,8 @@ export default function ChatButton() {
             </div>
 
             <div className="flex-1 p-4 overflow-y-auto">
-              <div className="bg-blue-50 rounded-lg p-4 mb-4 border border-blue-100">
-                <h3 className="font-bold text-lg text-blue-600">
-                  Your Balance
-                </h3>
+              <div className="rounded-lg p-4 mb-4 border">
+                <h3 className="font-bold text-lg">Your Balance</h3>
                 <p className="text-3xl font-bold">250 coins</p>
               </div>
 
@@ -244,122 +243,124 @@ export default function ChatButton() {
 
       default: // 'home'
         return (
-          <>
-            <div className="bg-blue-500 text-white rounded-t-2xl p-6">
-              <div className="flex justify-between items-start mb-8">
-                <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
-                  <div className="w-6 h-6 bg-blue-500 mask-image-[url('/placeholder.svg')] mask-size-contain" />
-                </div>
-                <div className="flex -space-x-2">
-                  <Avatar className="border-2 border-blue-500 w-10 h-10">
-                    <AvatarImage
-                      src="/placeholder.svg?height=40&width=40"
-                      alt="Support Agent"
-                    />
-                    <AvatarFallback>SA</AvatarFallback>
-                  </Avatar>
-                  <Avatar className="border-2 border-blue-500 w-10 h-10">
-                    <AvatarImage
-                      src="/placeholder.svg?height=40&width=40"
-                      alt="Support Agent"
-                    />
-                    <AvatarFallback>SA</AvatarFallback>
-                  </Avatar>
-                  <Avatar className="border-2 border-blue-500 w-10 h-10">
-                    <AvatarImage
-                      src="/placeholder.svg?height=40&width=40"
-                      alt="Support Agent"
-                    />
-                    <AvatarFallback>SA</AvatarFallback>
-                  </Avatar>
-                </div>
-              </div>
-              <h2 className="text-4xl font-bold mb-2">Hi there 👋</h2>
-              <p className="text-3xl font-bold">How can we help?</p>
-            </div>
+          // <>
+          //   <div className="bg-blue-500 text-white rounded-t-2xl p-6">
+          //     <div className="flex justify-between items-start mb-8">
+          //       <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+          //         <div className="w-6 h-6 bg-blue-500 mask-image-[url('/placeholder.svg')] mask-size-contain" />
+          //       </div>
+          //       <div className="flex -space-x-2">
+          //         <Avatar className="border-2 border-blue-500 w-10 h-10">
+          //           <AvatarImage
+          //             src="/placeholder.svg?height=40&width=40"
+          //             alt="Support Agent"
+          //           />
+          //           <AvatarFallback>SA</AvatarFallback>
+          //         </Avatar>
+          //         <Avatar className="border-2 border-blue-500 w-10 h-10">
+          //           <AvatarImage
+          //             src="/placeholder.svg?height=40&width=40"
+          //             alt="Support Agent"
+          //           />
+          //           <AvatarFallback>SA</AvatarFallback>
+          //         </Avatar>
+          //         <Avatar className="border-2 border-blue-500 w-10 h-10">
+          //           <AvatarImage
+          //             src="/placeholder.svg?height=40&width=40"
+          //             alt="Support Agent"
+          //           />
+          //           <AvatarFallback>SA</AvatarFallback>
+          //         </Avatar>
+          //       </div>
+          //     </div>
+          //     <h2 className="text-4xl font-bold mb-2">Hi there 👋</h2>
+          //     <p className="text-3xl font-bold">How can we help?</p>
+          //   </div>
 
-            <div className="p-4 bg-gradient-to-b from-blue-500 to-blue-400 overflow-y-auto max-h-[300px]">
-              <div
-                className="bg-white rounded-lg p-4 mb-4 cursor-pointer hover:bg-gray-50 transition-colors"
-                onClick={() => navigateTo("message")}
-              >
-                <div className="flex justify-between items-center">
-                  <div>
-                    <h3 className="font-bold text-lg">Send us a message</h3>
-                    <p className="text-gray-500">
-                      We'll be back online in 2 hours
-                    </p>
-                  </div>
-                  <Button className="bg-blue-500 hover:bg-blue-600 rounded-full h-10 w-10 p-0">
-                    <ArrowRight className="h-5 w-5" />
-                  </Button>
-                </div>
-              </div>
+          //   <div className="p-4 bg-gradient-to-b from-blue-500 to-blue-400 overflow-y-auto max-h-[300px]">
+          //     <div
+          //       className="bg-white rounded-lg p-4 mb-4 cursor-pointer hover:bg-gray-50 transition-colors"
+          //       onClick={() => navigateTo("message")}
+          //     >
+          //       <div className="flex justify-between items-center">
+          //         <div>
+          //           <h3 className="font-bold text-lg">Send us a message</h3>
+          //           <p className="text-gray-500">
+          //             We'll be back online in 2 hours
+          //           </p>
+          //         </div>
+          //         <Button className="bg-blue-500 hover:bg-blue-600 rounded-full h-10 w-10 p-0">
+          //           <ArrowRight className="h-5 w-5" />
+          //         </Button>
+          //       </div>
+          //     </div>
 
-              <div
-                className="bg-gray-100 rounded-lg p-4 mb-4 flex items-center cursor-pointer hover:bg-gray-200 transition-colors"
-                onClick={() => navigateTo("search")}
-              >
-                <Search className="h-5 w-5 text-gray-400 mr-2" />
-                <span className="text-gray-500">Search for help</span>
-                <Button className="bg-blue-500 hover:bg-blue-600 rounded-full h-8 w-8 p-0 ml-auto">
-                  <Search className="h-4 w-4" />
-                </Button>
-              </div>
+          //     <div
+          //       className="bg-gray-100 rounded-lg p-4 mb-4 flex items-center cursor-pointer hover:bg-gray-200 transition-colors"
+          //       onClick={() => navigateTo("search")}
+          //     >
+          //       <Search className="h-5 w-5 text-gray-400 mr-2" />
+          //       <span className="text-gray-500">Search for help</span>
+          //       <Button className="bg-blue-500 hover:bg-blue-600 rounded-full h-8 w-8 p-0 ml-auto">
+          //         <Search className="h-4 w-4" />
+          //       </Button>
+          //     </div>
 
-              <div
-                className="bg-white rounded-lg p-4 mb-4 cursor-pointer hover:bg-gray-50 transition-colors"
-                onClick={() => navigateTo("medusa")}
-              >
-                <div className="flex justify-between items-center">
-                  <h3 className="font-bold text-lg">Medusa Coins</h3>
-                  <ChevronRight className="h-5 w-5 text-gray-400" />
-                </div>
-              </div>
+          //     <div
+          //       className="bg-white rounded-lg p-4 mb-4 cursor-pointer hover:bg-gray-50 transition-colors"
+          //       onClick={() => navigateTo("medusa")}
+          //     >
+          //       <div className="flex justify-between items-center">
+          //         <h3 className="font-bold text-lg">Medusa Coins</h3>
+          //         <ChevronRight className="h-5 w-5 text-gray-400" />
+          //       </div>
+          //     </div>
 
-              {/* Additional content to demonstrate scrolling */}
-              <div className="bg-white rounded-lg p-4 mb-4">
-                <div className="flex justify-between items-center">
-                  <h3 className="font-bold text-lg">Recent Orders</h3>
-                  <ChevronRight className="h-5 w-5 text-gray-400" />
-                </div>
-              </div>
+          //     {/* Additional content to demonstrate scrolling */}
+          //     <div className="bg-white rounded-lg p-4 mb-4">
+          //       <div className="flex justify-between items-center">
+          //         <h3 className="font-bold text-lg">Recent Orders</h3>
+          //         <ChevronRight className="h-5 w-5 text-gray-400" />
+          //       </div>
+          //     </div>
 
-              <div className="bg-white rounded-lg p-4 mb-4">
-                <div className="flex justify-between items-center">
-                  <h3 className="font-bold text-lg">Account Settings</h3>
-                  <ChevronRight className="h-5 w-5 text-gray-400" />
-                </div>
-              </div>
-            </div>
+          //     <div className="bg-white rounded-lg p-4 mb-4">
+          //       <div className="flex justify-between items-center">
+          //         <h3 className="font-bold text-lg">Account Settings</h3>
+          //         <ChevronRight className="h-5 w-5 text-gray-400" />
+          //       </div>
+          //     </div>
+          //   </div>
 
-            <div className="flex justify-around p-4 bg-white rounded-b-2xl">
-              <Button
-                variant="ghost"
-                className="flex flex-col items-center gap-1 h-auto text-blue-500 cursor-pointer"
-                onClick={() => navigateTo("home")}
-              >
-                <Home className="h-6 w-6" />
-                <span className="font-medium">Home</span>
-              </Button>
-              <Button
-                variant="ghost"
-                className="flex flex-col items-center gap-1 h-auto text-gray-500 hover:text-blue-500 cursor-pointer"
-                onClick={() => navigateTo("message")}
-              >
-                <MessageCircle className="h-6 w-6" />
-                <span className="font-medium">Messages</span>
-              </Button>
-              <Button
-                variant="ghost"
-                className="flex flex-col items-center gap-1 h-auto text-gray-500 hover:text-blue-500 cursor-pointer"
-                onClick={() => navigateTo("help")}
-              >
-                <HelpCircle className="h-8 w-8" />
-                <span className="font-medium">Help</span>
-              </Button>
-            </div>
-          </>
+          //   <div className="flex justify-around p-4 bg-white rounded-b-2xl">
+          //     <Button
+          //       variant="ghost"
+          //       className="flex flex-col items-center gap-1 h-auto text-blue-500 cursor-pointer"
+          //       onClick={() => navigateTo("home")}
+          //     >
+          //       <Home className="h-6 w-6" />
+          //       <span className="font-medium">Home</span>
+          //     </Button>
+          //     <Button
+          //       variant="ghost"
+          //       className="flex flex-col items-center gap-1 h-auto text-gray-500 hover:text-blue-500 cursor-pointer"
+          //       onClick={() => navigateTo("message")}
+          //     >
+          //       <MessageCircle className="h-6 w-6" />
+          //       <span className="font-medium">Messages</span>
+          //     </Button>
+          //     <Button
+          //       variant="ghost"
+          //       className="flex flex-col items-center gap-1 h-auto text-gray-500 hover:text-blue-500 cursor-pointer"
+          //       onClick={() => navigateTo("help")}
+          //     >
+          //       <HelpCircle className="h-8 w-8" />
+          //       <span className="font-medium">Help</span>
+          //     </Button>
+          //   </div>
+          // </>
+
+          <HomePage />
         );
     }
   };

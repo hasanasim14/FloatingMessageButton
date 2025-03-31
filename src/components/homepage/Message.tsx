@@ -1,6 +1,10 @@
-import { ArrowLeft, ChevronRight, MessageCircle, Send } from "lucide-react";
+import {
+  //  ArrowLeft, ChevronRight,
+  MessageCircle,
+  // , Send
+} from "lucide-react";
 import { Button } from "../ui/button";
-import { Textarea } from "../ui/textarea";
+// import { Textarea } from "../ui/textarea";
 
 export default function Message() {
   return (
