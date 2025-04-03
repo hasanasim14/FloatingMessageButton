@@ -301,13 +301,13 @@ export default function ChatButton() {
 
   return (
     <>
-      <Image
+      {/* <Image
         src="/hero.png"
         alt="hero-image"
         // width={120}
         // height={120}
         fill
-      />
+      /> */}
 
       <div className="fixed bottom-8 right-8 z-40">
         <Popover open={open} onOpenChange={setOpen}>

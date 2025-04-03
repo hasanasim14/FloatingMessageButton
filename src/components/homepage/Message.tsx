@@ -1,13 +1,97 @@
 "use client";
 
 import { ArrowLeft, ArrowUp, Clock } from "lucide-react";
-import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+
+type Message = {
+  role: "user" | "assistant";
+  content: string;
+};
 
 export default function ChatPage() {
-  const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [sessionid, setSessionid] = useState("");
+  const [messages, setMessages] = useState<Message[]>([]);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Auto-scroll to bottom when messages change
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  const sendMessage = async () => {
+    if (!message.trim() || isLoading) return;
+
+    const userQuery = message.trim();
+    // Add user message to chat
+    setMessages((prev) => [...prev, { role: "user", content: userQuery }]);
+    setMessage("");
+    setIsLoading(true);
+
+    const timeout = 30 * 1000;
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), timeout);
+
+    try {
+      const res = await fetch(process.env.NEXT_PUBLIC_BASE_URL + "/agent", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          query: userQuery,
+          sessionid: sessionid,
+        }),
+        signal: controller.signal,
+      });
+
+      if (!res.ok) throw new Error(`API responded with status: ${res.status}`);
+
+      const data = await res.json();
+
+      // Update session ID if received
+      if (data.data?.sessionID) {
+        setSessionid(data.data.sessionID);
+      }
+
+      console.log("Api's", data.data);
+
+      // Add assistant response to chat
+      const assistantMessage =
+        data.data?.Message || "I couldn't process that request.";
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: assistantMessage },
+      ]);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("API Error:", error);
+        const errorMessage =
+          error.name === "AbortError"
+            ? "Sorry, the chat API took too long to respond. Please try again later."
+            : "Sorry, there was an error processing your request. Please try again at a later time";
+
+        setMessages((prev) => [
+          ...prev,
+          { role: "assistant", content: errorMessage },
+        ]);
+      }
+    } finally {
+      clearTimeout(timeoutId);
+      setIsLoading(false);
+      inputRef.current?.focus();
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  };
 
   return (
     <div className="flex flex-col h-screen bg-white">
@@ -20,49 +104,87 @@ export default function ChatPage() {
         <div className="flex items-center ml-2">
           <div className="ml-8">
             <h2 className="font-bold text-xl">M&P</h2>
-            <div className="flex items-center text-gray-500 text-sm">
-              <Clock className="h-4 w-4 mr-1" />
-              <span>Back in 3 hours</span>
-            </div>
           </div>
         </div>
       </div>
 
-      {/* Chat area */}
-      <div className="flex-1 p-4 overflow-y-auto">
-        <div className="text-center text-gray-600 my-8">
-          <p className="text-s">Ask us anything. We&apos;re here to help :)</p>
+      {/* Chat area - now with fixed height */}
+      <div className="flex-1 overflow-y-auto">
+        <div className="p-4">
+          {messages.length === 0 ? (
+            <div className="text-center text-gray-600 my-8">
+              <p className="text-s">
+                Ask us anything. We&apos;re here to help :)
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {messages.map((msg, index) => (
+                <div
+                  key={index}
+                  className={`flex ${
+                    msg.role === "user" ? "justify-end" : "justify-start"
+                  }`}
+                >
+                  <div
+                    className={`max-w-xs md:max-w-md lg:max-w-lg xl:max-w-xl rounded-lg px-4 py-2 ${
+                      msg.role === "user"
+                        ? "bg-blue-500 text-white"
+                        : "bg-gray-200 text-gray-800"
+                    }`}
+                  >
+                    <p className="whitespace-pre-wrap">{msg.content}</p>
+                  </div>
+                </div>
+              ))}
+              {isLoading && (
+                <div className="flex justify-start">
+                  <div className="bg-gray-200 text-gray-800 rounded-lg px-4 py-2">
+                    <div className="flex space-x-2">
+                      <div className="w-2 h-2 rounded-full bg-gray-500 animate-bounce"></div>
+                      <div
+                        className="w-2 h-2 rounded-full bg-gray-500 animate-bounce"
+                        style={{ animationDelay: "0.2s" }}
+                      ></div>
+                      <div
+                        className="w-2 h-2 rounded-full bg-gray-500 animate-bounce"
+                        style={{ animationDelay: "0.4s" }}
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+              )}
+              <div ref={messagesEndRef} />
+            </div>
+          )}
         </div>
-
-        {/* This area would contain chat messages */}
-        <div className="flex-1"></div>
       </div>
 
-      {/* Message input */}
-      <div className="p-4">
+      {/* Message input - now fixed at bottom */}
+      <div className="p-4 border-t">
         <div className="bg-gray-100 rounded-3xl p-4">
-          <Input
-            type="email"
-            placeholder="email@example.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="border-none bg-transparent mb-2 px-0 focus-visible:ring-0"
-          />
-
-          <div className="h-px bg-gray-300 my-2"></div>
-
           <div className="flex items-end">
             <Textarea
+              ref={inputRef}
               placeholder="Message..."
               value={message}
               onChange={(e) => setMessage(e.target.value)}
+              onKeyDown={handleKeyDown}
               className="border-none bg-transparent resize-none px-0 focus-visible:ring-0 flex-1"
               rows={1}
+              disabled={isLoading}
             />
-
             <div className="flex items-center">
-              <button className="ml-2 bg-gray-200 rounded-full p-3 hover:bg-gray-300 cursor-pointer">
-                <ArrowUp className="h-5 w-5 text-gray-500" />
+              <button
+                onClick={sendMessage}
+                disabled={isLoading}
+                className="ml-2 bg-gray-200 rounded-full p-3 hover:bg-gray-300 cursor-pointer disabled:opacity-50"
+              >
+                {isLoading ? (
+                  <Clock className="h-5 w-5 text-gray-500" />
+                ) : (
+                  <ArrowUp className="h-5 w-5 text-gray-500" />
+                )}
               </button>
             </div>
           </div>
