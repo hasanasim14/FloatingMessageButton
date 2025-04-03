@@ -16,7 +16,7 @@ import {
   HelpCircle,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import Image from "next/image";
+// import Image from "next/image";
 import Message from "@/components/homepage/Message";
 import Help from "@/components/homepage/Help";
 import HomePage from "@/components/homepage/Home";
@@ -36,8 +36,10 @@ export default function ChatButton() {
     switch (currentPage) {
       case "message":
         return (
-          <>
-            <Message />
+          <div className="flex flex-col h-full">
+            <div className="flex-1 overflow-y-auto">
+              <Message />
+            </div>
             <div className="flex justify-around p-4 bg-white rounded-b-2xl sticky bottom-0">
               <Button
                 variant="ghost"
@@ -64,7 +66,7 @@ export default function ChatButton() {
                 <span className="font-medium">Help</span>
               </Button>
             </div>
-          </>
+          </div>
         );
 
       case "search":
@@ -233,8 +235,10 @@ export default function ChatButton() {
 
       case "help":
         return (
-          <>
-            <Help />
+          <div className="flex flex-col h-full">
+            <div className="flex-1 overflow-y-auto">
+              <Help />
+            </div>
             <div className="flex justify-around p-4 bg-white rounded-b-2xl sticky bottom-0">
               <Button
                 variant="ghost"
@@ -261,13 +265,15 @@ export default function ChatButton() {
                 <span className="font-medium">Help</span>
               </Button>
             </div>
-          </>
+          </div>
         );
 
       default: // 'home'
         return (
-          <>
-            <HomePage />
+          <div className="flex flex-col h-full">
+            <div className="flex-1 overflow-y-auto">
+              <HomePage />
+            </div>
             <div className="flex justify-around p-4 bg-white rounded-b-2xl sticky bottom-0">
               <Button
                 variant="ghost"
@@ -294,7 +300,7 @@ export default function ChatButton() {
                 <span className="font-medium">Help</span>
               </Button>
             </div>
-          </>
+          </div>
         );
     }
   };
@@ -322,7 +328,9 @@ export default function ChatButton() {
             side="top"
             style={{ maxHeight: "calc(100vh - 100px)" }}
           >
-            <div className="flex flex-col h-[500px]">{renderPage()}</div>
+            <div className="flex flex-col h-[500px] overflow-hidden">
+              {renderPage()}
+            </div>
           </PopoverContent>
         </Popover>
       </div>
