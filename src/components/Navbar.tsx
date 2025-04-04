@@ -7,14 +7,6 @@ import Image from "next/image";
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [authToken, setAuthToken] = useState<string>("");
-
-  useEffect(() => {
-    const token = sessionStorage.getItem("authToken");
-    if (token) {
-      setAuthToken(token);
-    }
-  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -52,32 +44,23 @@ export function Navbar() {
       >
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           {/* Logo */}
-          <Link href="/docs" className="z-50 relative">
+          <Link href="/" className="z-50 relative">
             <Image
-              src="/logo.png"
+              src="/m&p.png"
               alt="Logo"
-              width={200}
-              height={400}
+              width={400}
+              height={600}
               className="h-auto w-auto max-h-16"
             />
           </Link>
 
           {/* Desktop Navigation - hidden on mobile */}
           <nav className="hidden md:flex items-center space-x-8">
-            {authToken && (
-              <Link
-                href="/"
-                className="group/item relative text-lg font-medium text-gray-500 hover:text-black transition-colors"
-              >
-                Go to Chat
-                <span className="absolute left-0 bottom-0 h-0.5 w-0 bg-black transition-all duration-400 ease-in-out group-hover/item:w-full" />
-              </Link>
-            )}
             {navigationItems.map((item, index) => (
               <Link
                 key={index}
                 href={item.href}
-                className="group/item relative text-lg font-medium text-gray-500 hover:text-black transition-colors"
+                className="group/item relative text-lg font-small text-white hover:text-[#f46117]/90 transition-colors"
               >
                 {item.label}
                 <span className="absolute left-0 bottom-0 h-0.5 w-0 bg-black transition-all duration-400 ease-in-out group-hover/item:w-full" />
@@ -121,23 +104,6 @@ export function Navbar() {
           >
             <div className="container mx-auto px-8 py-20 flex flex-col h-full">
               <nav className="flex flex-col mt-auto mb-20 space-y-8">
-                {/* Go to Chat Link for Authenticated Users */}
-                {authToken && (
-                  <Link
-                    href="/"
-                    className={`group/item relative text-3xl font-medium text-black transition-all duration-500 ease-in-out ${
-                      isMenuOpen
-                        ? "opacity-100 translate-x-0"
-                        : "opacity-0 translate-x-8"
-                    }`}
-                    style={{ transitionDelay: "0ms" }}
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    Go to Chat
-                    <span className="absolute left-0 bottom-0 h-0.5 w-0 bg-black transition-all duration-400 ease-in-out group-hover/item:w-full"></span>
-                  </Link>
-                )}
-
                 {/* Navigation Items */}
                 {navigationItems.map((item, index) => (
                   <Link
@@ -149,7 +115,7 @@ export function Navbar() {
                         : "opacity-0 translate-x-8"
                     }`}
                     style={{
-                      transitionDelay: `${(authToken ? 1 : 0) + index * 100}ms`,
+                      transitionDelay: `${index * 100}ms`,
                     }}
                     onClick={() => setIsMenuOpen(false)}
                   >
