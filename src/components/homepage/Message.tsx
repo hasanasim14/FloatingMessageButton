@@ -101,7 +101,7 @@ export default function Message() {
       <div className="flex items-center p-4 border-b">
         <div className="flex items-center">
           <div>
-            <h2 className="font-bold text-xl">M&P</h2>
+            <h2 className="font-bold text-xl">M&P Support</h2>
           </div>
         </div>
       </div>
