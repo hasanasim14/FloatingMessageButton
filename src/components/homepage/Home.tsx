@@ -22,7 +22,7 @@ export default function HomePage({ onNavigate }: HomePageProps) {
               <Mic className="h-5 w-5 text-[#f46117]" />
             </div>
             <span className="text-sm font-medium text-gray-600">
-              Voice Input
+              Speak to us!
             </span>
           </div>
 
@@ -33,7 +33,9 @@ export default function HomePage({ onNavigate }: HomePageProps) {
             <div className="bg-gray-100 hover:bg-gray-200 p-3 rounded-full transition-colors duration-300">
               <MessageSquare className="h-5 w-5 text-[#f46117]" />
             </div>
-            <span className="text-sm font-medium text-gray-600">Text Chat</span>
+            <span className="text-sm font-medium text-gray-600">
+              Talk to us!
+            </span>
           </div>
         </div>
 

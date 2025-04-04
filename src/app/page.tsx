@@ -32,7 +32,7 @@ export default function ChatButton() {
             <div className="flex-1 overflow-y-auto">
               <Message />
             </div>
-            <div className="flex justify-around p-4 bg-white rounded-b-2xl sticky bottom-0">
+            <div className="flex justify-around p-2 bg-white rounded-b-2xl sticky bottom-0">
               <Button
                 variant="ghost"
                 className="flex flex-col items-center gap-1 h-auto text-gray-500 hover:text-[#f46117] cursor-pointer"
@@ -67,7 +67,7 @@ export default function ChatButton() {
             <div className="flex-1 overflow-y-auto">
               <Help />
             </div>
-            <div className="flex justify-around p-4 bg-white rounded-b-2xl sticky bottom-0">
+            <div className="flex justify-around p-2 bg-white rounded-b-2xl sticky bottom-0">
               <Button
                 variant="ghost"
                 className="flex flex-col items-center gap-1 h-auto text-gray-500 hover:text-[#f46117] cursor-pointer"
@@ -102,7 +102,7 @@ export default function ChatButton() {
             <div className="flex-1 overflow-y-auto">
               <HomePage onNavigate={navigateTo} />
             </div>
-            <div className="flex justify-around p-4 bg-white rounded-b-2xl sticky bottom-0">
+            <div className="flex justify-around p-2 bg-white rounded-b-2xl sticky bottom-0">
               <Button
                 variant="ghost"
                 className="flex flex-col items-center gap-1 h-auto text-[#f46117] cursor-pointer"

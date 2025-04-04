@@ -1,10 +1,10 @@
 "use client";
 
 import type React from "react";
-
 import { ArrowUp, Clock } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { useState, useRef, useEffect } from "react";
+import ReactMarkdown from "react-markdown";
 
 type Message = {
   role: "user" | "assistant";
@@ -23,6 +23,14 @@ export default function Message() {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  // Save and restore cursor position when disabled state changes
+  useEffect(() => {
+    if (!isLoading && inputRef.current) {
+      // When loading finishes, restore focus to the textarea
+      inputRef.current.focus();
+    }
+  }, [isLoading]);
 
   const sendMessage = async () => {
     if (!message.trim() || isLoading) return;
@@ -84,7 +92,7 @@ export default function Message() {
     } finally {
       clearTimeout(timeoutId);
       setIsLoading(false);
-      inputRef.current?.focus();
+      // Focus is now handled by the useEffect
     }
   };
 
@@ -127,11 +135,53 @@ export default function Message() {
                   <div
                     className={`max-w-xs md:max-w-md lg:max-w-lg xl:max-w-xl rounded-lg px-4 py-2 ${
                       msg.role === "user"
-                        ? "bg-[#f46117] text-white"
-                        : "bg-gray-200 text-gray-800"
+                        ? "bg-[#f46117] text-white text-sm"
+                        : "bg-gray-200 text-gray-800 text-sm"
                     }`}
                   >
-                    <p className="whitespace-pre-wrap">{msg.content}</p>
+                    {msg.role === "user" ? (
+                      <p className="whitespace-pre-wrap">{msg.content}</p>
+                    ) : (
+                      <div className="whitespace-pre-wrap">
+                        <ReactMarkdown
+                          components={{
+                            /* eslint-disable @typescript-eslint/no-unused-vars */
+                            a: ({ node, ...props }) => (
+                              <a
+                                className="text-blue-600 underline hover:text-blue-800"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                {...props}
+                              />
+                            ),
+                            /* eslint-disable @typescript-eslint/no-unused-vars */
+                            pre: ({ node, ...props }) => (
+                              <pre
+                                className="bg-gray-100 p-2 rounded my-2 overflow-x-auto"
+                                {...props}
+                              />
+                            ),
+                            /* eslint-disable @typescript-eslint/no-unused-vars */
+                            code: ({ node, ...props }) => (
+                              <code
+                                className="bg-gray-100 rounded px-1 py-0.5"
+                                {...props}
+                              />
+                            ),
+                            /* eslint-disable @typescript-eslint/no-unused-vars */
+                            strong: ({ node, ...props }) => (
+                              <strong className="font-bold" {...props} />
+                            ),
+                            /* eslint-disable @typescript-eslint/no-unused-vars */
+                            em: ({ node, ...props }) => (
+                              <em className="italic" {...props} />
+                            ),
+                          }}
+                        >
+                          {msg.content}
+                        </ReactMarkdown>
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}
@@ -159,8 +209,8 @@ export default function Message() {
       </div>
 
       {/* Message input */}
-      <div className="p-4 border-t bg-white">
-        <div className="bg-gray-100 rounded-3xl p-2">
+      <div className="px-4 pt-2 border-t bg-white">
+        <div className="bg-gray-100 rounded-3xl p-2 border border-gray-300">
           <div className="flex items-end">
             <Textarea
               ref={inputRef}
