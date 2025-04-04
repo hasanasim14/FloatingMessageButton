@@ -40,7 +40,7 @@ export default function Help() {
     },
     {
       title: "Account Management",
-      description: "Managing your Medusa account settings and preferences.",
+      description: "Managing your M&P account settings and preferences.",
       articles: 7,
       highlighted: false,
     },
