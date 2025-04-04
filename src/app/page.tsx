@@ -16,7 +16,6 @@ import {
   HelpCircle,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
-// import Image from "next/image";
 import Message from "@/components/homepage/Message";
 import Help from "@/components/homepage/Help";
 import HomePage from "@/components/homepage/Home";
@@ -27,6 +26,7 @@ export default function ChatButton() {
   const [open, setOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState<PopoverPage>("home");
   const [searchQuery, setSearchQuery] = useState("");
+  const navbarHeight = "64px";
 
   const navigateTo = (page: PopoverPage) => {
     setCurrentPage(page);
@@ -306,20 +306,21 @@ export default function ChatButton() {
   };
 
   return (
-    <>
-      {/* <Image
-        src="/hero.png"
-        alt="hero-image"
-        // width={120}
-        // height={120}
-        fill
-      /> */}
+    <div
+      className="flex flex-col items-center justify-center h-[calc(100vh-64px)] bg-black text-white overflow-hidden"
+      style={{ "--navbar-height": navbarHeight } as React.CSSProperties}
+    >
+      <h1 className="text-center text-7xl font-light tracking-tight">
+        <span>Result </span>
+        <span className="font-bold">Tracking</span>
+        <span className="text-[#f46117] text-7xl">.</span>
+      </h1>
 
       <div className="fixed bottom-8 right-8 z-40">
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
             <Button className="h-12 w-12 rounded-full shadow-lg cursor-pointer transition-transform duration-200 hover:scale-110 hover:bg-[#f46117] p-0 flex items-center justify-center bg-[#f46117]">
-              <MessageSquare className="h-10 w-10" />
+              <MessageSquare className="h-6 w-6" />
             </Button>
           </PopoverTrigger>
           <PopoverContent
@@ -334,6 +335,6 @@ export default function ChatButton() {
           </PopoverContent>
         </Popover>
       </div>
-    </>
+    </div>
   );
 }
