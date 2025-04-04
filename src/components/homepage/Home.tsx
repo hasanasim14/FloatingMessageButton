@@ -1,4 +1,4 @@
-import { ChevronRight, Search, SendHorizonal } from "lucide-react";
+import { ChevronRight, Mic, MessageSquare, Search } from "lucide-react";
 
 export default function HomePage() {
   return (
@@ -10,20 +10,24 @@ export default function HomePage() {
       </div>
 
       <div className="p-4 flex-1 bg-[#f46117]">
-        <div className="bg-white rounded-lg p-4 mb-4 cursor-pointer hover:bg-gray-50 transition-colors group">
-          <div className="flex justify-between items-center">
-            <div>
-              <h3 className="font-medium text-lg text-black group-hover:text-[#f46117] transition-colors duration-300">
-                Send us a message
-              </h3>
-              <p className="text-gray-500">
-                We&apos;ll be back online in 3 hours
-              </p>
+        {/* Horizontal container for both buttons */}
+        <div className="flex gap-4 mb-4">
+          {/* Mic Button (White Box) */}
+          <div className="bg-white rounded-lg p-4 flex-1 flex justify-center items-center">
+            <div className="bg-gray-100 hover:bg-gray-200 p-3 rounded-full transition-colors duration-300 cursor-pointer">
+              <Mic className="h-5 w-5 text-[#f46117]" />
             </div>
-            <SendHorizonal className="h-5 w-5 text-[#f46117]" />
+          </div>
+
+          {/* Message Button (White Box) */}
+          <div className="bg-white rounded-lg p-4 flex-1 flex justify-center items-center">
+            <div className="bg-gray-100 hover:bg-gray-200 p-3 rounded-full transition-colors duration-300 cursor-pointer ">
+              <MessageSquare className="h-5 w-5 text-[#f46117]" />
+            </div>
           </div>
         </div>
 
+        {/* Rest of the content (search & list items) */}
         <div className="max-w-sm mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
           <div className="p-2 rounded-xl">
             <div className="bg-blue-50 hover:bg-[#f46117]/10 flex items-center px-4 py-3 rounded-xl transition-colors duration-300 cursor-pointer">
@@ -43,7 +47,6 @@ export default function HomePage() {
 
             <li className="list-item group hover:bg-gray-100 transition-colors duration-300 cursor-pointer">
               <span className="text-gray-800">
-                {" "}
                 Submitting Products for Distribution
               </span>
               <ChevronRight className="h-5 w-5 text-gray-400 stroke-[3] transition-colors duration-200 group-hover:text-[#f46117]" />
@@ -55,7 +58,7 @@ export default function HomePage() {
             </li>
 
             <li className="list-item group hover:bg-gray-100 transition-colors duration-300 cursor-pointer">
-              <span className="text-gray-800"> Return Policy & Procedure</span>
+              <span className="text-gray-800">Return Policy & Procedure</span>
               <ChevronRight className="h-5 w-5 text-gray-400 stroke-[3] transition-colors duration-200 group-hover:text-[#f46117]" />
             </li>
           </ul>

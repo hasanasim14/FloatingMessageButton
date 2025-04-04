@@ -3,7 +3,7 @@
 import { ChevronRight, Search } from "lucide-react";
 import { useEffect, useRef } from "react";
 
-export default function HelpCenterPage() {
+export default function Help() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   // Sample data with more collections to demonstrate scrolling
@@ -75,9 +75,9 @@ export default function HelpCenterPage() {
   }, []);
 
   return (
-    <div className="max-w-md mx-auto h-screen flex flex-col bg-white rounded-xl shadow-sm overflow-hidden">
+    <div className="flex flex-col h-full bg-white">
       {/* Fixed header */}
-      <div className="p-4 border-b bg-white sticky top-0 z-10">
+      <div className="p-4 border-b bg-white z-10">
         <h1 className="text-xl font-semibold text-center mb-4">Help</h1>
 
         {/* Search Bar */}
@@ -94,10 +94,7 @@ export default function HelpCenterPage() {
       </div>
 
       {/* Scrollable content */}
-      <div
-        ref={scrollContainerRef}
-        className="flex-1 overflow-y-auto p-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent"
-      >
+      <div ref={scrollContainerRef} className="flex-1 overflow-y-auto p-4">
         <div className="mb-4">
           <p className="text-gray-700 font-medium">
             {collections.length} collections
