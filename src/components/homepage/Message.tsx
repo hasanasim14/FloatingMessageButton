@@ -19,15 +19,13 @@ export default function Message() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Auto-scroll to bottom when messages change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // Save and restore cursor position when disabled state changes
+  // Save cursor position
   useEffect(() => {
     if (!isLoading && inputRef.current) {
-      // When loading finishes, restore focus to the textarea
       inputRef.current.focus();
     }
   }, [isLoading]);
@@ -36,7 +34,6 @@ export default function Message() {
     if (!message.trim() || isLoading) return;
 
     const userQuery = message.trim();
-    // Add user message to chat
     setMessages((prev) => [...prev, { role: "user", content: userQuery }]);
     setMessage("");
     setIsLoading(true);
@@ -62,12 +59,9 @@ export default function Message() {
 
       const data = await res.json();
 
-      // Update session ID if received
       if (data.data?.sessionID) {
         setSessionid(data.data.sessionID);
       }
-
-      console.log("Api's", data.data);
 
       // Add assistant response to chat
       const assistantMessage =
@@ -92,7 +86,6 @@ export default function Message() {
     } finally {
       clearTimeout(timeoutId);
       setIsLoading(false);
-      // Focus is now handled by the useEffect
     }
   };
 
@@ -114,7 +107,7 @@ export default function Message() {
         </div>
       </div>
 
-      {/* Chat area - with proper overflow handling */}
+      {/* Chat area*/}
       <div className="flex-1 overflow-y-auto">
         <div className="p-4">
           {messages.length === 0 ? (
@@ -211,14 +204,14 @@ export default function Message() {
       {/* Message input */}
       <div className="px-4 pt-2 border-t bg-white">
         <div className="bg-gray-100 rounded-3xl p-2 border border-gray-300">
-          <div className="flex items-end">
+          <div className="flex items-center">
             <Textarea
               ref={inputRef}
               placeholder="Message..."
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="border-none bg-transparent resize-none px-2 py-1 focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none shadow-none flex-1 min-h-[40px] max-h-[120px]"
+              className="border-none bg-transparent resize-none px-2 py-1 focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none shadow-none flex-1 min-h-[20px] max-h-[80px] text-sm"
               style={{ border: "none", outline: "none", boxShadow: "none" }}
               disabled={isLoading}
             />

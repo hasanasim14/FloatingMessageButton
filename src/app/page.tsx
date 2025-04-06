@@ -155,7 +155,7 @@ export default function ChatButton() {
             className="w-80 sm:w-96 p-0 rounded-2xl border-none shadow-xl"
             align="end"
             side="top"
-            style={{ maxHeight: "calc(100vh - 100px)" }}
+            style={{ maxHeight: "calc(100vh - 90px)" }}
           >
             <div className="flex flex-col h-[500px] overflow-hidden">
               {renderPage()}
