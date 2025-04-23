@@ -384,7 +384,7 @@ export default function ChatButton() {
       <div className="fixed bottom-8 right-8 z-40">
         {!open && (
           <div className="absolute -top-4 -left-24 flex items-center gap-2">
-            <span className="text-lg text-orange-400 bg-gray-800 px-2 py-1 rounded-lg shadow border border-gray-700 animate-bounce">
+            <span className="text-2xl text-orange-400 bg-gray-800 px-2 py-1 rounded-lg shadow border border-gray-700 animate-bounce">
               Try me!
             </span>
           </div>

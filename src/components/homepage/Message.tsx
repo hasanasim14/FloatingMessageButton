@@ -99,7 +99,7 @@ export default function Message() {
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="flex items-center p-4 border-b">
+      <div className="flex items-center p-4 border-b bg-white">
         <div className="flex items-center">
           <div>
             <h2 className="font-bold text-xl">M&P Support</h2>
@@ -108,7 +108,7 @@ export default function Message() {
       </div>
 
       {/* Chat area*/}
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto bg-white">
         <div className="p-4">
           {messages.length === 0 ? (
             <div className="text-center text-gray-600 my-8">
