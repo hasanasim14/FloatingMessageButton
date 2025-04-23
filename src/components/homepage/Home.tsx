@@ -17,7 +17,7 @@ export default function HomePage({ onNavigate }: HomePageProps) {
 
       <div className="p-4 flex-1 bg-[#f46117]">
         <div className="flex gap-4 mb-4">
-          <div className="bg-white rounded-lg p-4 flex-1 flex flex-col justify-center items-center gap-2">
+          <div className="bg-white rounded-lg p-4 flex-1 flex flex-col justify-center items-center gap-2 opacity-50 cursor-not-allowed pointer-events-none">
             <div className="bg-gray-100 p-3 rounded-full transition-colors duration-300">
               <Mic className="h-5 w-5 text-[#f46117]" />
             </div>
