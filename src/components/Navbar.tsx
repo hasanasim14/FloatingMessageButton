@@ -44,7 +44,7 @@ export function Navbar() {
             : "bg-transparent"
         }`}
       >
-        <div className="container mx-auto px-6 py-3 flex justify-between items-center">
+        <div className="container mx-auto px-6 py-1 flex justify-between items-center">
           {/* Logo */}
           <Link href="/" className="z-50 relative group">
             <Image
