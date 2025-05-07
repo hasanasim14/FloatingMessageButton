@@ -20,7 +20,6 @@ export default function ChatButton() {
   const [open, setOpen] = useState(false);
   const [currentUrl, setCurrentUrl] = useState("https://www.mulphilog.com/");
   const [currentPage, setCurrentPage] = useState<PopoverPage>("home");
-  const navbarHeight = "64px";
 
   const navigateTo = (page: PopoverPage) => {
     setCurrentPage(page);
@@ -141,9 +140,13 @@ export default function ChatButton() {
 
   return (
     <div
-      className="flex flex-col items-center py-12 px-4 bg-gray-950 text-white min-h-[calc(100vh-64px)]"
-      style={{ "--navbar-height": navbarHeight } as React.CSSProperties}
+      className="flex flex-col items-center py-12 px-4 text-white h-full"
+      // style={{ "--navbar-height": navbarHeight } as React.CSSProperties}
     >
+      <h1 className="text-2xl font-bold">
+        This is not the Official M&P Website
+      </h1>
+
       <IframeComponent currentUrl={currentUrl} />
 
       {/* Chat Button */}
