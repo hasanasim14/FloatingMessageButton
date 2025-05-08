@@ -139,17 +139,18 @@ export default function ChatButton() {
   };
 
   return (
-    <div
-      className="flex flex-col items-center py-12 px-4 text-white h-full"
-      // style={{ "--navbar-height": navbarHeight } as React.CSSProperties}
-    >
-      <h1 className="text-2xl font-bold">
-        This is not the Official M&P Website
-      </h1>
+    <div className="flex flex-col items-center py-12 px-4 text-white h-full">
+      <div className="w-full max-w-4xl text-center mb-8">
+        <div className="inline-block bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text">
+          <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-transparent">
+            This is not the Official M&P Website
+          </h1>
+        </div>
+      </div>
 
       <IframeComponent currentUrl={currentUrl} />
 
-      {/* Chat Button */}
+      {/* Chat Button - unchanged */}
       <div className="fixed bottom-8 right-8 z-40">
         {!open && (
           <div className="absolute -top-4 -left-24 flex items-center gap-2">
