@@ -1,9 +1,10 @@
 "use client";
 
 import type React from "react";
-import { ArrowUp, Clock } from "lucide-react";
-import { Textarea } from "@/components/ui/textarea";
 import { useState, useRef, useEffect } from "react";
+import { Textarea } from "@/components/ui/textarea";
+import { setTempSessionID, getTempSessionID } from "@/lib/tempStore";
+import { ArrowUp, Clock } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 
 type Message = {
@@ -18,33 +19,60 @@ export default function Message({
 }) {
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [sessionid, setSessionid] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const prevMessagesLength = useRef(0);
 
-  // 1. Open the last link provided
-  // 2. Open the link inside the iframe
+  const fetchExistingMessages = async (sessionId: string) => {
+    try {
+      const res = await fetch(
+        process.env.NEXT_PUBLIC_BASE_URL + "/chatHistory",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ sessionid: sessionId }),
+        }
+      );
+
+      if (!res.ok) throw new Error("API Not working");
+
+      const data = await res.json();
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const transformedMessages = data.map((msg: any) => ({
+        role: msg.type === "user" ? "user" : "assistant",
+        content: msg.content,
+      }));
+      setMessages(transformedMessages);
+    } catch (error) {
+      console.error("Error", error);
+    }
+  };
+
+  useEffect(() => {
+    const sessionId = getTempSessionID();
+    if (sessionId) {
+      fetchExistingMessages(sessionId);
+    }
+  }, []);
+
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
 
-    // Check for new messages that might contain URLs
     if (messages.length > prevMessagesLength.current) {
       const newMessages = messages.slice(prevMessagesLength.current);
       newMessages.forEach((msg) => {
         if (msg.role === "assistant") {
-          // Improved URL detection that handles markdown links
           const urlRegex =
             /(?:https?:\/\/[^\s]+)|(?:\[([^\]]+)\]\((https?:\/\/[^\s)]+)\))/g;
           let match;
 
-          // Check for both raw URLs and markdown links
           while ((match = urlRegex.exec(msg.content)) !== null) {
-            // If it's a markdown link [text](url), use the URL part (match[2])
             const url = match[2] || match[0];
             if (url && onUrlDetected) {
-              // Send the URL to the parent component instead of opening it
               onUrlDetected(url);
             }
           }
@@ -83,7 +111,7 @@ export default function Message({
         },
         body: JSON.stringify({
           query: userQuery,
-          sessionid: sessionid,
+          sessionid: getTempSessionID(),
         }),
         signal: controller.signal,
       });
@@ -93,7 +121,7 @@ export default function Message({
       const data = await res.json();
 
       if (data.data?.sessionID) {
-        setSessionid(data.data.sessionID);
+        setTempSessionID(data?.data?.sessionID);
       }
 
       // Add assistant response to chat
