@@ -27,8 +27,8 @@ export default function ChatButton() {
   };
 
   return (
-    <div className="flex flex-col items-center py-12 px-4 text-white h-full">
-      <div className="w-full max-w-4xl text-center mb-8">
+    <div className="flex flex-col items-center py-8 px-4 py-0 text-white h-full">
+      <div className="w-full max-w-4xl text-center mt-2">
         <div className="inline-block bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text">
           <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-transparent">
             This is not the Official M&P Website

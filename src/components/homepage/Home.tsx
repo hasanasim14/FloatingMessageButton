@@ -1,6 +1,13 @@
 "use client";
 
-import { ChevronRight } from "lucide-react";
+import {
+  Building,
+  ChevronRight,
+  Earth,
+  Handshake,
+  Package,
+  User,
+} from "lucide-react";
 
 interface HomePageProps {
   onCardClick?: (content: string) => void;
@@ -8,11 +15,26 @@ interface HomePageProps {
 
 export default function HomePage({ onCardClick }: HomePageProps) {
   const cardItems = [
-    "Which Service should I choose?",
-    "Find an Express Center",
-    "Job Opportunities",
-    "M&P Company Timeline",
-    "Leadership Team",
+    {
+      text: "Which Service should I choose?",
+      icon: <Package className="h-5 w-5 text-[#f46117]" />,
+    },
+    {
+      text: "Find an Express Center",
+      icon: <Building className="h-5 w-5 text-[#f46117]" />,
+    },
+    {
+      text: "Job Opportunities",
+      icon: <User className="h-5 w-5 text-[#f46117]" />,
+    },
+    {
+      text: "M&P Company Timeline",
+      icon: <Handshake className="h-5 w-5 text-[#f46117]" />,
+    },
+    {
+      text: "Leadership Team",
+      icon: <Earth className="h-5 w-5 text-[#f46117]" />,
+    },
   ];
 
   const handleCardClick = (content: string) => {
@@ -38,10 +60,13 @@ export default function HomePage({ onCardClick }: HomePageProps) {
             {cardItems.map((item, index) => (
               <li
                 key={index}
-                onClick={() => handleCardClick(item)}
+                onClick={() => handleCardClick(item.text)}
                 className="flex items-center justify-between p-3 group hover:bg-gray-50 transition-colors duration-300 cursor-pointer"
               >
-                <span className="text-gray-800 font-medium">{item}</span>
+                <div className="flex items-center gap-3">
+                  {item.icon}
+                  <span className="text-gray-800 font-medium">{item.text}</span>
+                </div>
                 <ChevronRight className="h-5 w-5 text-gray-400 stroke-[3] transition-colors duration-200 group-hover:text-[#f46117]" />
               </li>
             ))}
