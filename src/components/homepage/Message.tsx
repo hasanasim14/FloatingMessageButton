@@ -35,6 +35,7 @@ export default function Message({
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            authorization: "CxzzU2s11eygP1RFICwzLiDlR",
           },
           body: JSON.stringify({ sessionid: sessionId }),
         }
@@ -118,6 +119,7 @@ export default function Message({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          authorization: "CxzzU2s11eygP1RFICwzLiDlR",
         },
         body: JSON.stringify({
           query: userQuery,
