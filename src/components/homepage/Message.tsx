@@ -3,11 +3,15 @@
 import type React from "react";
 import { useState, useRef, useEffect } from "react";
 import { Textarea } from "@/components/ui/textarea";
-import { setTempSessionID, getTempSessionID } from "@/lib/tempStore";
+import {
+  setTempSessionID,
+  getTempSessionID,
+  getTempErrorMessage,
+  setTempErrorMessage,
+} from "@/lib/tempStore";
 import { ArrowUp, Clock } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import HomePage from "./Home";
-// import HomePage from "./home-page";
 
 type Message = {
   role: "user" | "assistant";
@@ -23,6 +27,8 @@ export default function Message({
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [showHomePage, setShowHomePage] = useState(true);
+  const [timeoutState, setTimeoutState] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const prevMessagesLength = useRef(0);
@@ -63,8 +69,15 @@ export default function Message({
 
   useEffect(() => {
     const sessionId = getTempSessionID();
+    const error = getTempErrorMessage();
+    console.log("error state", error);
+
     if (sessionId) {
       fetchExistingMessages(sessionId);
+    }
+
+    if (error) {
+      setErrorMessage(error);
     }
   }, []);
 
@@ -131,6 +144,11 @@ export default function Message({
       if (!res.ok) throw new Error(`API responded with status: ${res.status}`);
 
       const data = await res.json();
+      if (data?.success === false) {
+        setTimeoutState(true);
+        setErrorMessage(data?.message);
+        setTempErrorMessage(data?.message);
+      }
 
       if (data.data?.sessionID) {
         setTempSessionID(data?.data?.sessionID);
@@ -183,6 +201,13 @@ export default function Message({
           </div>
         </div>
       </div>
+
+      {/* Error Bar */}
+      {errorMessage && (
+        <div className="bg-red-500 text-white px-4 py-2 text-sm font-medium">
+          {errorMessage}
+        </div>
+      )}
 
       {/* Chat area */}
       <div className="flex-1 overflow-y-auto bg-white">
@@ -286,7 +311,7 @@ export default function Message({
               onKeyDown={handleKeyDown}
               className="border-none bg-transparent resize-none px-2 py-1 focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none shadow-none flex-1 min-h-[20px] max-h-[80px] text-sm"
               style={{ border: "none", outline: "none", boxShadow: "none" }}
-              disabled={isLoading}
+              disabled={isLoading || timeoutState}
             />
             <button
               onClick={() => sendMessage()}
