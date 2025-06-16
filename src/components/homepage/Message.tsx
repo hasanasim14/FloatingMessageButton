@@ -70,7 +70,6 @@ export default function Message({
   useEffect(() => {
     const sessionId = getTempSessionID();
     const error = getTempErrorMessage();
-    console.log("error state", error);
 
     if (sessionId) {
       fetchExistingMessages(sessionId);
@@ -78,6 +77,7 @@ export default function Message({
 
     if (error) {
       setErrorMessage(error);
+      setTimeoutState(true);
     }
   }, []);
 
