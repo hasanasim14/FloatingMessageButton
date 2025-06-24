@@ -1,29 +1,121 @@
 "use client";
 
 import type React from "react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { MessageSquare } from "lucide-react";
+import { MessageSquare, Home, MessageCircle } from "lucide-react";
 import Message from "@/components/homepage/Message";
+import HomePage from "@/components/homepage/Home";
 import IframeComponent from "@/components/homepage/IframeComponent";
+
+type PopoverPage = "home" | "message";
 
 export default function ChatButton() {
   const [open, setOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState<PopoverPage>("home");
   const [currentUrl, setCurrentUrl] = useState("https://www.mulphilog.com/");
+  const [message, setMessage] = useState("");
+  const [initialQuery, setInitialQuery] = useState<string | undefined>();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [isLoading, setIsLoading] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [timeoutState, setTimeoutState] = useState(false);
+  const hasUsedInitialQuery = useRef(false);
+
+  const navigateTo = (page: PopoverPage) => {
+    setCurrentPage(page);
+  };
+
+  const sendMessage = (customMessage?: string) => {
+    const query = customMessage || message.trim();
+    if (!query) return;
+
+    hasUsedInitialQuery.current = false;
+    setInitialQuery(query);
+    setMessage("");
+    setCurrentPage("message");
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  };
 
   const renderPage = () => {
-    return (
-      <Message
-        onUrlDetected={(url) => {
-          setCurrentUrl(url);
-        }}
-      />
-    );
+    switch (currentPage) {
+      case "message":
+        return (
+          <div className="flex flex-col h-full">
+            <div className="flex-1 overflow-y-auto">
+              <Message
+                initialQuery={initialQuery}
+                onUrlDetected={(url) => setCurrentUrl(url)}
+                hasUsedInitialQuery={hasUsedInitialQuery}
+              />
+            </div>
+            <div className="flex justify-around p-2 bg-white rounded-b-2xl sticky bottom-0">
+              <Button
+                variant="ghost"
+                className="flex flex-col items-center gap-1 h-auto text-gray-500 hover:text-[#f46117] cursor-pointer"
+                onClick={() => navigateTo("home")}
+              >
+                <Home className="h-6 w-6" />
+                <span className="font-medium">Home</span>
+              </Button>
+              <Button
+                variant="ghost"
+                className="flex flex-col items-center gap-1 h-auto text-[#f46117] cursor-pointer"
+                onClick={() => navigateTo("message")}
+              >
+                <MessageCircle className="h-6 w-6" />
+                <span className="font-medium">Messages</span>
+              </Button>
+            </div>
+          </div>
+        );
+
+      default: // 'home'
+        return (
+          <div className="flex flex-col h-full">
+            <div className="flex-1 overflow-y-auto">
+              <HomePage
+                onCardClick={(content) => sendMessage(content)}
+                message={message}
+                isLoading={isLoading}
+                timeoutState={timeoutState}
+                setMessage={setMessage}
+                handleKeyDown={handleKeyDown}
+                sendMessage={sendMessage}
+              />
+            </div>
+            <div className="flex justify-around p-2 bg-white rounded-b-2xl sticky bottom-0">
+              <Button
+                variant="ghost"
+                className="flex flex-col items-center gap-1 h-auto text-[#f46117] cursor-pointer"
+                onClick={() => navigateTo("home")}
+              >
+                <Home className="h-6 w-6" />
+                <span className="font-medium">Home</span>
+              </Button>
+              <Button
+                variant="ghost"
+                className="flex flex-col items-center gap-1 h-auto text-gray-500 hover:text-[#f46117] cursor-pointer"
+                onClick={() => navigateTo("message")}
+              >
+                <MessageCircle className="h-6 w-6" />
+                <span className="font-medium">Messages</span>
+              </Button>
+            </div>
+          </div>
+        );
+    }
   };
 
   return (
