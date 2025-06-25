@@ -1,5 +1,7 @@
 "use client";
 
+import type React from "react";
+
 import {
   Briefcase,
   Calculator,
@@ -76,10 +78,10 @@ export default function HomePage({
   };
 
   return (
-    <div className="flex flex-col h-full max-h-screen bg-white">
+    <div className="flex flex-col h-full max-h-screen bg-gradient-to-br from-[#f46117] via-[#ff8c42] to-[#ffa726]">
       {/* Top bar */}
-      <div className="px-4 py-4 border-b backdrop-blur overflow-y-auto ">
-        <h2 className="text-xl font-semibold mb-0 text-[#f46117]">
+      <div className="px-4 py-4 border-b border-white/20 backdrop-blur overflow-y-auto">
+        <h2 className="text-xl font-semibold mb-0 text-white drop-shadow-sm">
           👋 How can I help you today?
         </h2>
 
@@ -87,13 +89,13 @@ export default function HomePage({
         <div className="flex-1 px-4 py-2">
           <div className="flex gap-4 mb-4"></div>
 
-          <div className="max-w-sm mx-auto bg-white rounded-2xl border shadow-sm overflow-hidden">
+          <div className="max-w-sm mx-auto bg-white/95 backdrop-blur-sm rounded-2xl border border-white/30 shadow-lg overflow-hidden">
             <ul className="divide-y divide-gray-200">
               {cardItems.map((item, index) => (
                 <li
                   key={index}
                   onClick={() => handleCardClick(item.query)}
-                  className="flex items-center justify-between p-3 group hover:bg-gray-50 transition-colors duration-300 cursor-pointer"
+                  className="flex items-center justify-between p-2 group hover:bg-gray-50/80 transition-colors duration-300 cursor-pointer"
                 >
                   <div className="flex items-center gap-3">
                     {item.icon}
@@ -110,7 +112,7 @@ export default function HomePage({
       </div>
 
       {/* Sticky message area */}
-      <div className="sticky bottom-0 bg-white/90 backdrop-blur border-t">
+      <div className="sticky bottom-0">
         <TextAreaMessage
           message={message}
           isLoading={isLoading}

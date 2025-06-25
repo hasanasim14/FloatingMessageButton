@@ -36,6 +36,8 @@ export default function Message({
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const prevMessagesLength = useRef(0);
+  const [hasLoadedExistingMessages, setHasLoadedExistingMessages] =
+    useState(false);
 
   const fetchExistingMessages = async (sessionId: string) => {
     try {
@@ -66,29 +68,22 @@ export default function Message({
       }
 
       setMessages(transformedMessages);
+      setHasLoadedExistingMessages(true);
     } catch (error) {
       console.error("Error", error);
+      setHasLoadedExistingMessages(true);
     }
   };
 
-  useEffect(() => {
-    if (
-      initialQuery &&
-      messages.length === 0 &&
-      hasUsedInitialQuery?.current === false
-    ) {
-      hasUsedInitialQuery.current = true;
-      setMessage("");
-      sendMessage(initialQuery);
-    }
-  }, [initialQuery, messages.length]);
-
+  // Load existing messages on mount
   useEffect(() => {
     const sessionId = getTempSessionID();
     const error = getTempErrorMessage();
 
     if (sessionId) {
       fetchExistingMessages(sessionId);
+    } else {
+      setHasLoadedExistingMessages(true);
     }
 
     if (error) {
@@ -96,6 +91,28 @@ export default function Message({
       setTimeoutState(true);
     }
   }, []);
+
+  // Handle initial query - only after existing messages are loaded
+  useEffect(() => {
+    if (
+      initialQuery &&
+      hasUsedInitialQuery?.current === false &&
+      hasLoadedExistingMessages
+    ) {
+      console.log("Processing initial query:", initialQuery);
+      hasUsedInitialQuery.current = true;
+      setShowHomePage(false);
+
+      // Add the user message to the chat immediately
+      setMessages((prev) => {
+        console.log("Adding user message to chat:", initialQuery);
+        return [...prev, { role: "user", content: initialQuery }];
+      });
+
+      // Send to API
+      sendMessageToAPI(initialQuery);
+    }
+  }, [initialQuery, hasLoadedExistingMessages]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -129,14 +146,10 @@ export default function Message({
     }
   }, [isLoading]);
 
-  const sendMessage = async (customMessage?: string) => {
-    const userQuery = customMessage || message.trim();
-
+  const sendMessageToAPI = async (userQuery: string) => {
     if (!userQuery || isLoading) return;
 
-    setShowHomePage(false);
-    setMessages((prev) => [...prev, { role: "user", content: userQuery }]);
-    setMessage("");
+    console.log("Sending message to API:", userQuery);
     setIsLoading(true);
 
     const timeout = 30 * 1000;
@@ -173,6 +186,7 @@ export default function Message({
       // Add assistant response to chat
       const assistantMessage =
         data.data?.Message || "I couldn't process that request.";
+      console.log("Adding assistant response:", assistantMessage);
       setMessages((prev) => [
         ...prev,
         { role: "assistant", content: assistantMessage },
@@ -196,12 +210,34 @@ export default function Message({
     }
   };
 
+  const sendMessage = async (customMessage?: string) => {
+    const userQuery = customMessage || message.trim();
+
+    if (!userQuery || isLoading) return;
+
+    console.log("Regular send message:", userQuery);
+    setShowHomePage(false);
+    setMessages((prev) => [...prev, { role: "user", content: userQuery }]);
+    setMessage("");
+
+    await sendMessageToAPI(userQuery);
+  };
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       sendMessage();
     }
   };
+
+  // Debug logging
+  useEffect(() => {
+    console.log("Messages state updated:", messages);
+  }, [messages]);
+
+  useEffect(() => {
+    console.log("Initial query changed:", initialQuery);
+  }, [initialQuery]);
 
   return (
     <div className="flex flex-col h-full">
@@ -225,66 +261,65 @@ export default function Message({
       <div className="flex-1 overflow-y-auto bg-white">
         <div className="p-4">
           <div className="space-y-4">
-            {messages.map((msg, index) => (
-              <div
-                key={index}
-                className={`flex ${
-                  msg.role === "user" ? "justify-end" : "justify-start"
-                }`}
-              >
-                <div
-                  className={`max-w-xs md:max-w-md lg:max-w-lg xl:max-w-xl rounded-lg px-4 py-2 ${
-                    msg.role === "user"
-                      ? "bg-[#f46117] text-white text-sm"
-                      : "bg-gray-200 text-gray-800 text-sm"
-                  }`}
-                >
-                  {msg.role === "user" ? (
-                    <p className="whitespace-pre-wrap">{msg.content}</p>
-                  ) : (
-                    <div className="whitespace-pre-wrap">
-                      <ReactMarkdown
-                        components={{
-                          /* eslint-disable @typescript-eslint/no-unused-vars */
-                          a: ({ node, ...props }) => (
-                            <a
-                              className="text-blue-600 underline hover:text-blue-800"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              {...props}
-                            />
-                          ),
-                          /* eslint-disable @typescript-eslint/no-unused-vars */
-                          pre: ({ node, ...props }) => (
-                            <pre
-                              className="bg-gray-100 p-2 rounded my-2 overflow-x-auto"
-                              {...props}
-                            />
-                          ),
-                          /* eslint-disable @typescript-eslint/no-unused-vars */
-                          code: ({ node, ...props }) => (
-                            <code
-                              className="bg-gray-100 rounded px-1 py-0.5"
-                              {...props}
-                            />
-                          ),
-                          /* eslint-disable @typescript-eslint/no-unused-vars */
-                          strong: ({ node, ...props }) => (
-                            <strong className="font-bold" {...props} />
-                          ),
-                          /* eslint-disable @typescript-eslint/no-unused-vars */
-                          em: ({ node, ...props }) => (
-                            <em className="italic" {...props} />
-                          ),
-                        }}
-                      >
-                        {msg.content}
-                      </ReactMarkdown>
+            {messages.map((msg, index) => {
+              console.log(`Rendering message ${index}:`, msg);
+
+              if (msg.role === "user") {
+                return (
+                  <div key={index} className="flex justify-end w-full">
+                    <div className="bg-[#f46117] text-white text-sm rounded-lg px-4 py-2 max-w-xs md:max-w-md lg:max-w-lg xl:max-w-xl">
+                      <p className="whitespace-pre-wrap">{msg.content}</p>
                     </div>
-                  )}
-                </div>
-              </div>
-            ))}
+                  </div>
+                );
+              } else {
+                return (
+                  <div key={index} className="flex justify-start w-full">
+                    <div className="bg-gray-200 text-gray-800 text-sm rounded-lg px-4 py-2 max-w-xs md:max-w-md lg:max-w-lg xl:max-w-xl">
+                      <div className="whitespace-pre-wrap">
+                        <ReactMarkdown
+                          components={{
+                            /* eslint-disable @typescript-eslint/no-unused-vars */
+                            a: ({ node, ...props }) => (
+                              <a
+                                className="text-blue-600 underline hover:text-blue-800"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                {...props}
+                              />
+                            ),
+                            /* eslint-disable @typescript-eslint/no-unused-vars */
+                            pre: ({ node, ...props }) => (
+                              <pre
+                                className="bg-gray-100 p-2 rounded my-2 overflow-x-auto"
+                                {...props}
+                              />
+                            ),
+                            /* eslint-disable @typescript-eslint/no-unused-vars */
+                            code: ({ node, ...props }) => (
+                              <code
+                                className="bg-gray-100 rounded px-1 py-0.5"
+                                {...props}
+                              />
+                            ),
+                            /* eslint-disable @typescript-eslint/no-unused-vars */
+                            strong: ({ node, ...props }) => (
+                              <strong className="font-bold" {...props} />
+                            ),
+                            /* eslint-disable @typescript-eslint/no-unused-vars */
+                            em: ({ node, ...props }) => (
+                              <em className="italic" {...props} />
+                            ),
+                          }}
+                        >
+                          {msg.content}
+                        </ReactMarkdown>
+                      </div>
+                    </div>
+                  </div>
+                );
+              }
+            })}
             {isLoading && (
               <div className="flex justify-start">
                 <div className="bg-gray-200 text-gray-800 rounded-lg px-4 py-2">

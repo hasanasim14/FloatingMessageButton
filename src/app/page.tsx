@@ -98,7 +98,7 @@ export default function ChatButton() {
             <div className="flex justify-around p-2 bg-white rounded-b-2xl sticky bottom-0">
               <Button
                 variant="ghost"
-                className="flex flex-col items-center gap-1 h-auto text-[#f46117] cursor-pointer"
+                className="flex flex-col items-center gap-1 h-auto text-[#f46117] cursor-pointer hover:text-[#f46117]"
                 onClick={() => navigateTo("home")}
               >
                 <Home className="h-6 w-6" />
@@ -117,6 +117,8 @@ export default function ChatButton() {
         );
     }
   };
+
+  console.log("currentPage is:", typeof currentPage);
 
   return (
     <div className="flex flex-col items-center py-8 px-4 py-0 text-white h-full">
