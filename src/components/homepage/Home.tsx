@@ -14,7 +14,6 @@ import {
 } from "lucide-react";
 import { TextAreaMessage } from "./TextAreaMessage";
 
-// type PopoverPage = "home" | "message";
 interface HomePageProps {
   onCardClick?: (content: string) => void;
   message: string;
@@ -74,18 +73,15 @@ export default function HomePage({
 
   const handleCardClick = (content: string) => {
     onCardClick?.(content);
-    // onNavigate?.("message");
   };
 
   return (
     <div className="flex flex-col h-full max-h-screen bg-gradient-to-br from-[#f46117] via-[#ff8c42] to-[#ffa726]">
-      {/* Top bar */}
       <div className="px-4 py-4 border-b border-white/20 backdrop-blur overflow-y-auto">
         <h2 className="text-xl font-semibold mb-0 text-white drop-shadow-sm">
           👋 How can I help you today?
         </h2>
 
-        {/* Scrollable content area */}
         <div className="flex-1 px-4 py-2">
           <div className="flex gap-4 mb-4"></div>
 
@@ -111,7 +107,6 @@ export default function HomePage({
         </div>
       </div>
 
-      {/* Sticky message area */}
       <div className="sticky bottom-0">
         <TextAreaMessage
           message={message}

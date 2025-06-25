@@ -92,20 +92,16 @@ export default function Message({
     }
   }, []);
 
-  // Handle initial query - only after existing messages are loaded
   useEffect(() => {
     if (
       initialQuery &&
       hasUsedInitialQuery?.current === false &&
       hasLoadedExistingMessages
     ) {
-      console.log("Processing initial query:", initialQuery);
       hasUsedInitialQuery.current = true;
       setShowHomePage(false);
 
-      // Add the user message to the chat immediately
       setMessages((prev) => {
-        console.log("Adding user message to chat:", initialQuery);
         return [...prev, { role: "user", content: initialQuery }];
       });
 
@@ -149,7 +145,6 @@ export default function Message({
   const sendMessageToAPI = async (userQuery: string) => {
     if (!userQuery || isLoading) return;
 
-    console.log("Sending message to API:", userQuery);
     setIsLoading(true);
 
     const timeout = 30 * 1000;
@@ -186,7 +181,6 @@ export default function Message({
       // Add assistant response to chat
       const assistantMessage =
         data.data?.Message || "I couldn't process that request.";
-      console.log("Adding assistant response:", assistantMessage);
       setMessages((prev) => [
         ...prev,
         { role: "assistant", content: assistantMessage },
@@ -215,7 +209,6 @@ export default function Message({
 
     if (!userQuery || isLoading) return;
 
-    console.log("Regular send message:", userQuery);
     setShowHomePage(false);
     setMessages((prev) => [...prev, { role: "user", content: userQuery }]);
     setMessage("");
@@ -229,15 +222,6 @@ export default function Message({
       sendMessage();
     }
   };
-
-  // Debug logging
-  useEffect(() => {
-    console.log("Messages state updated:", messages);
-  }, [messages]);
-
-  useEffect(() => {
-    console.log("Initial query changed:", initialQuery);
-  }, [initialQuery]);
 
   return (
     <div className="flex flex-col h-full">
@@ -262,8 +246,6 @@ export default function Message({
         <div className="p-4">
           <div className="space-y-4">
             {messages.map((msg, index) => {
-              console.log(`Rendering message ${index}:`, msg);
-
               if (msg.role === "user") {
                 return (
                   <div key={index} className="flex justify-end w-full">
@@ -342,7 +324,6 @@ export default function Message({
         </div>
       </div>
 
-      {/* Message input */}
       <TextAreaMessage
         message={message}
         isLoading={isLoading}
