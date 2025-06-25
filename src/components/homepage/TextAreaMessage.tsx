@@ -22,8 +22,8 @@ export const TextAreaMessage = ({
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
   return (
-    <div className="px-4 py-3 border-t bg-white">
-      <div className="bg-gray-100 rounded-3xl pt-2 border border-gray-300">
+    <div className="px-4 py-2 border-t bg-white">
+      <div className="bg-gray-100 rounded-3xl p-2 border border-gray-300">
         <div className="flex items-center">
           <Textarea
             ref={inputRef}

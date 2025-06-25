@@ -60,7 +60,7 @@ export default function ChatButton() {
                 hasUsedInitialQuery={hasUsedInitialQuery}
               />
             </div>
-            <div className="flex justify-around p-2 bg-white rounded-b-2xl sticky bottom-0">
+            <div className="flex justify-around bg-white rounded-b-2xl sticky bottom-0">
               <Button
                 variant="ghost"
                 className="flex flex-col items-center gap-1 h-auto text-gray-500 hover:text-[#f46117] cursor-pointer"
@@ -95,7 +95,7 @@ export default function ChatButton() {
                 sendMessage={sendMessage}
               />
             </div>
-            <div className="flex justify-around p-2 bg-white rounded-b-2xl sticky bottom-0">
+            <div className="flex justify-around bg-white rounded-b-2xl sticky bottom-0">
               <Button
                 variant="ghost"
                 className="flex flex-col items-center gap-1 h-auto text-[#f46117] cursor-pointer hover:text-[#f46117]"
